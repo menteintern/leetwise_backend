@@ -1,7 +1,0 @@
-target/
-*.jar
-*.class
-.git
-.gitignore
-Dockerfile
-README.md
