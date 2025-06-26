@@ -4,7 +4,11 @@ HELP.md
 .env
 .env.local
 .env.*.local
-
+target/surefire-reports/
+target/classes/
+target/test-classes/
+target/maven-*
+target/generated-*
 ### STS ###
 .apt_generated
 .classpath
