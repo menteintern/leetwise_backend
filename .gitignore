@@ -2,7 +2,9 @@ HELP.md
 .mvn/wrapper/maven-wrapper.jar
 !**/src/test/**/target/
 .env
-/target/classes/application.properties
+.env.local
+.env.*.local
+
 ### STS ###
 .apt_generated
 .classpath
