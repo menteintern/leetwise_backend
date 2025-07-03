@@ -21,6 +21,10 @@ public class AppController {
 	@Autowired
 	UserService userService;
 	
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody User user){
+		return userService.loginUser(user);
+	}
 	@PostMapping("/create-user")
     public ResponseEntity<?> createUser(@RequestBody User user) {
 		return userService.createUser(user);

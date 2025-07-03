@@ -29,7 +29,7 @@ public class Controller {
     
     private static final Logger logger = LoggerFactory.getLogger(Controller.class);
     
-    @Scheduled(cron = "0 */14 * * * *")
+    @Scheduled(cron = "0 */13 * * * *")
     @GetMapping()
     public void cronRequest() {
     	logger.info("Jaagte Raho!");
@@ -44,6 +44,10 @@ public class Controller {
     public ResponseEntity<?> getLeetCodeQuestion(@RequestBody Map<String, String> request) {
         return appService.getQuestionData(request.get("titleSlug"));
     }
+    @PostMapping("/solution")
+    public ResponseEntity<?> getSolution(@RequestBody Map<String, String> request) {
+        return appService.getSolution(request.get("titleSlug"));
+    }
     
     @PostMapping("/execute-code")
     public ResponseEntity<?> executeCode(@RequestBody CodeExecutionRequest request) {
@@ -57,5 +61,10 @@ public class Controller {
                     "details", Arrays.toString(e.getStackTrace()).substring(0, 500)
                 ));
         }
+    }
+    
+    @PostMapping("/contest")
+    public ResponseEntity<?> getContestDetails(@RequestBody Map<String, String> request){
+    	return appService.getContestData(request.get("titleSlug"));
     }
 }

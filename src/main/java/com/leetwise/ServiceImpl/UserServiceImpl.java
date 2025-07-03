@@ -29,9 +29,23 @@ public class UserServiceImpl implements UserService{
 			return ResponseEntity.ok("User already hai!");
 		}
 		else {
-			userRepository.save(user);
-			
+			userRepository.save(user);	
 		}
 		return ResponseEntity.ok("Kar dia add!");
+	}
+	
+	@Override
+	public ResponseEntity<?> loginUser(User user) {
+		Optional<User> isUserExist = userRepository.findByEmail(user.getEmail());
+		if(isUserExist.isEmpty()) {
+			return ResponseEntity.ok("User not present");
+		}
+		User presentUser = isUserExist.get();
+		if(!presentUser.getPassword().equals(user.getPassword())) {
+			return ResponseEntity.ok("Password incorrect!");
+		}else if(!presentUser.getUsername().equals(user.getUsername())) {
+			return ResponseEntity.ok("Username incorrect!");
+		}
+		return ResponseEntity.ok("Login Successful!");
 	}
 }

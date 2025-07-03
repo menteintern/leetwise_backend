@@ -8,4 +8,5 @@ public interface UserService {
 
 	ResponseEntity<?> createUser(User user);
 	
+	ResponseEntity<?> loginUser(User user);
 }

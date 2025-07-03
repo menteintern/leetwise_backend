@@ -11,4 +11,8 @@ public interface  AppService {
 	ResponseEntity<?> getQuestionData(String titleSlug);
 	
 	ResponseEntity<?> executeCode(CodeExecutionRequest request);
+	
+	ResponseEntity<?> getContestData(String titleslug);
+	
+	ResponseEntity<?> getSolution(String titleSlug);
 }

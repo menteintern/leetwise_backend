@@ -89,6 +89,26 @@ public class AppServiceImpl implements AppService {
     }
     
     @Override
+    public ResponseEntity<?> getSolution(String titleSlug){
+    	String query= """
+	    			query solutionData($titleSlug: String!) {
+					  question(titleSlug: $titleSlug) {
+					    solution {
+					      id
+					      content
+					      canSeeDetail
+					      paidOnly
+					    }
+					  }
+					}
+	    			""";
+    	Map<String, Object> graphQLRequest = new HashMap<>();
+        graphQLRequest.put("query", query);
+        graphQLRequest.put("variables", Map.of("titleSlug", titleSlug));
+        
+        return executeLeetCodeQuery(graphQLRequest);
+    }
+    @Override
     public ResponseEntity<?> getUserProfile(String username) {
         String query = """
             query userPublicProfile($username: String!) {
@@ -150,6 +170,30 @@ public class AppServiceImpl implements AppService {
                     statusDisplay
                     lang
                 }
+                userContestRanking(username: $username) {
+			    attendedContestsCount
+			    rating
+			    globalRanking
+			    totalParticipants
+			    topPercentage
+			    badge {
+			      name
+			    }
+			  }
+			  userContestRankingHistory(username: $username) {
+			    attended
+			    trendDirection
+			    problemsSolved
+			    totalProblems
+			    finishTimeInSeconds
+			    rating
+			    ranking
+			    contest {
+			      title
+			      titleSlug
+			      startTime
+			    }
+			  }
             }
         """;
         
@@ -238,13 +282,9 @@ public class AppServiceImpl implements AppService {
             
             try (okhttp3.Response response = client.newCall(request).execute()) {
                 String responseBody = response.body().string();
-                System.out.println("Response code: " + response.code());
-                System.out.println("Response body: " + responseBody);
-                
                 if (!response.isSuccessful()) {
                     throw new RuntimeException("Failed to submit code: " + responseBody);
                 }
-                
                 return responseBody;
             }
         } catch (Exception e) {
@@ -300,8 +340,29 @@ public class AppServiceImpl implements AppService {
                 throw e;
             }
         }
-        
         throw new RuntimeException("Timeout waiting for code execution result after " + maxAttempts + " attempts");
     }
  
+    @Override
+	public ResponseEntity<?> getContestData(String titleslug){
+    	String query="""
+    			query contestDetails($titleSlug: String!) {
+				  contest(titleSlug: $titleSlug) {
+				    title
+				    startTime
+				    duration
+				    questions {
+				      title
+				      titleSlug
+				      questionId
+				    }
+				  }
+				}
+    			""";
+    	Map<String, Object> graphQLRequest = new HashMap<>();
+        graphQLRequest.put("query", query);
+        graphQLRequest.put("variables", Map.of("titleSlug", titleslug));
+        
+        return executeLeetCodeQuery(graphQLRequest);
+    }
 }
